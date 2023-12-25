@@ -6,11 +6,12 @@ import {
   Patch,
   Param,
   Delete,
-  ForbiddenException,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { TokenHandler } from 'src/utils/token-handler';
 
 @Controller('user')
 export class UserController {
@@ -24,10 +25,15 @@ export class UserController {
     );
 
     if (userExists) {
-      throw new ForbiddenException('User already exists');
+      throw new BadRequestException('User already exists');
     }
 
-    const user = await this.userService.createUser(createUserDto);
+    const password = await TokenHandler.hashKey(createUserDto.password);
+
+    const user = await this.userService.createUser({
+      ...createUserDto,
+      password,
+    });
 
     if (user) {
       return {
@@ -40,7 +46,7 @@ export class UserController {
       };
     }
 
-    throw new ForbiddenException('Invalid user data');
+    throw new BadRequestException('Invalid user data');
   }
 
   @Get()
