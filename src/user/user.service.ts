@@ -8,7 +8,7 @@ import { Model } from 'mongoose';
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
-  async create(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto) {
     return await this.userModel.create(createUserDto);
   }
 
@@ -16,8 +16,8 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findUser(field: string, key: string) {
+    return await this.userModel.findOne({ [field]: key });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
