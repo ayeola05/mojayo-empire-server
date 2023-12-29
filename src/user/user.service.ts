@@ -12,16 +12,23 @@ export class UserService {
     return await this.userModel.create(createUserDto);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAllUsers() {
+    return await this.userModel.find();
   }
 
   async findUser(field: string, key: string) {
     return await this.userModel.findOne({ [field]: key });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async updateUser(userId: string, updateUserDto: UpdateUserDto) {
+    return await this.userModel.findOneAndUpdate(
+      { _id: userId },
+      {
+        name: updateUserDto.name,
+        email: updateUserDto.email,
+      },
+      { new: true },
+    );
   }
 
   remove(id: number) {

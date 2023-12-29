@@ -26,7 +26,7 @@ const ReviewSchema = SchemaFactory.createForClass(Review);
   timestamps: true,
 })
 export class Product {
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   name: string;
 
   //
