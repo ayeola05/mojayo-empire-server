@@ -13,6 +13,7 @@ import {
   imports: [
     MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
   ],
+  exports: [ProductService],
   controllers: [ProductController],
   providers: [ProductService],
 })
